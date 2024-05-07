@@ -1,10 +1,13 @@
-#Joc de Snake, projecte de Pol Raich i Victor Pàllas de l'asignatura Algorismia i programació audiovisual en l'universitat politecnica de catalunya
+"""
+Joc de Snake, projecte de Pol Raich i Victor Pàllas de l'asignatura Algorismia i programació audiovisual en l'universitat politecnica de catalunya
+
+"""
 
 import turtle
 import random
 import time
 
-difficulty = 0.1 
+difficulty = 0.05 
 posponer = difficulty               # Speed of the snake
 
 
@@ -27,26 +30,36 @@ head.direction = 'stop'
 # Food
 food = turtle.Turtle()
 food.speed(0)
-food.shape('square')
+food.shape('circle')
 food.color('red')
 food.penup()
-food.goto(random.randint(-480, 480), random.randint(-280,280))          # The food has to spawn between -500, 500 and letting a margin of 20px for not beeing in the border.
+food.goto(random.randint(-480, 480), random.randint(-280,280))                    # The food has to spawn between -500, 500 and letting a margin of 20px for not beeing in the border.
+
+# Body
+body = []
 
 
 # Movements
 def move_up():
     head.direction = 'up'
+  
     
 def move_down():
     head.direction = 'down'
+
     
 def move_left():
     head.direction = 'left'
+ 
     
 def move_right():
     head.direction = 'right'
 
+
 def movment():
+    """
+    
+    """
     if head.direction == 'up':
         y = head.ycor()
         head.sety(y + 20)
@@ -62,6 +75,42 @@ def movment():
     if head.direction == 'right':
         x = head.xcor()
         head.setx(x + 20)
+
+
+def IncraseSnakeSize():
+    """
+    
+    """
+    part = turtle.Turtle()
+    part.speed(0)
+    part.shape('square')
+    part.color('yellow')
+    part.penup()
+    body.append(part)
+
+
+def Bodymovment():
+    """
+    
+    """
+    
+        
+    
+
+def Eatfood():
+    """
+    
+    """
+    if head.distance(food) < 20:
+        IncraseSnakeSize()  
+        food.goto(random.randint(-480, 480), random.randint(-280, 280))
+        
+        
+def Border():
+    if head.xcor() > 480 or head.ycor() > 280 or  head.xcor() < -480 or head.ycor() < -280 :
+        head.direction = 'stop'
+        head.goto(0, 0)
+        body.clear()
         
         
 # Keyboard conexion
@@ -79,5 +128,8 @@ while True:
     window.update()
     
     movment()
+    Eatfood()
+    Border()
+    Bodymovment()
     
     time.sleep(posponer)
